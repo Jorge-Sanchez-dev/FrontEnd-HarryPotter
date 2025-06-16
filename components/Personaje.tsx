@@ -1,5 +1,5 @@
 //Personaje.tsx
-//href={`/Personaje/${character.id}`}
+
 import { FunctionComponent } from "preact";
 
 

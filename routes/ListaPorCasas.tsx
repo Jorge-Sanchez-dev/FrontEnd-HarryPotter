@@ -10,7 +10,7 @@ export default function Houses() {
         {houses.map((house) => (
           <form action={`/houses/${house}`} method="get">
             <button class="houseButton" type="submit">
-              {house.charAt(0).toUpperCase() + house.slice(1)}
+              {house.charAt(0).toUpperCase() + house.slice(1)} {/* Pone la primera letra en mayúscula */}
             </button>
           </form>
         ))}

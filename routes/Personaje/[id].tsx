@@ -1,7 +1,8 @@
 import Header from "../../components/Header.tsx";
 import axios from "npm:axios";
-import { Handlers, PageProps } from "$fresh/server.ts";
+import { Handlers, FreshContext, PageProps } from "$fresh/server.ts";
 
+// Tipos de datos
 type Wand = { length: number | null };
 
 type Character = {
@@ -16,41 +17,54 @@ type Character = {
   wand: Wand;
 };
 
-export const handler: Handlers<Character | null> = {
-  async GET(_, ctx) {
+// Tipo Data que devuelve el handler
+type Data = {
+  character: Character | null;
+};
+
+export const handler: Handlers<Data> = {
+  GET: async(_req: Request, ctx: FreshContext<unknown, Data>) => { 
     const id = ctx.params.id;
-    const res = await axios.get("https://hp-api.onrender.com/api/characters");
-    const characters = res.data as Character[];
-    const character = characters.find((c) => c.id === id);
-    return ctx.render(character || null);
+
+    try {
+      const res = await axios.get("https://hp-api.onrender.com/api/characters");
+      const characters = res.data as Character[];
+      const character = characters.find((c) => c.id === id) || null;
+
+      return ctx.render({ character });
+    } catch (error) {
+      console.error("Error al obtener personaje", error);
+      return ctx.render({ character: null });
+    }
   },
 };
 
-export default function PersonajePage({ data }: PageProps<Character | null>) {
-  if (!data) return <h1>Personaje no encontrado</h1>;
+export default function PersonajePage({ data }: PageProps<Data>) {
+  const character = data.character;
+
+  if (!character) return <h1>Personaje no encontrado</h1>;
 
   return (
     <div>
-      <h1>{data.name}</h1>
-      <img src={data.image} alt={data.name} />
+      <h1>{character.name}</h1>
+      <img src={character.image} alt={character.name} />
       <p>
-        <strong>Actor:</strong> {data.actor}
+        <strong>Actor:</strong> {character.actor}
       </p>
       <p>
-        <strong>Casa:</strong> {data.house}
+        <strong>Casa:</strong> {character.house}
       </p>
       <p>
-        <strong>Cumpleaños:</strong> {data.dateOfBirth || "Desconocido"}
+        <strong>Cumpleaños:</strong> {character.dateOfBirth || "Desconocido"}
       </p>
       <p>
-        <strong>Especie:</strong> {data.species}
+        <strong>Especie:</strong> {character.species}
       </p>
       <p>
-        <strong>Género:</strong> {data.gender}
+        <strong>Género:</strong> {character.gender}
       </p>
       <p>
-        <strong>Tamaño varita:</strong> {data.wand.length ?? "Desconocida"}{" "}
-        pulgadas
+        <strong>Tamaño varita:</strong> {character.wand.length ?? "Desconocida"} pulgadas
       </p>
     </div>
   );
