@@ -4,6 +4,7 @@ const Footer: FunctionComponent = () => {
     return (
         <div class="Footer">
             Copyright Jorge Sánchez López
+            Universidad Nebrija
         </div>
     )
 }
