@@ -33,3 +33,4 @@ const Personaje: FunctionComponent<CharacterProps> = ({ character }) => {
 };
 
 export default Personaje;
+
