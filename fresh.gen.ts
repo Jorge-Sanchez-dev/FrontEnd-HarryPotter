@@ -15,7 +15,8 @@ import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
 import * as $houses_house_ from "./routes/houses/[house].tsx";
 import * as $index from "./routes/index.tsx";
-
+import * as $BuscarPorPersonaje from "./islands/BuscarPorPersonaje.tsx";
+import * as $BuscarPorhechizo from "./islands/BuscarPorhechizo.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -34,7 +35,10 @@ const manifest = {
     "./routes/houses/[house].tsx": $houses_house_,
     "./routes/index.tsx": $index,
   },
-  islands: {},
+  islands: {
+    "./islands/BuscarPorPersonaje.tsx": $BuscarPorPersonaje,
+    "./islands/BuscarPorhechizo.tsx": $BuscarPorhechizo,
+  },
   baseUrl: import.meta.url,
 } satisfies Manifest;
 
